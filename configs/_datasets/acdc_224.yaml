@@ -1,0 +1,27 @@
+dataset:
+  name: acdc  # 数据集名称为acdc
+  kwargs:
+    root_dir: data/ACDC  # 数据集根目录
+    labeled_num: 7  # 用于标注的样本数量
+    labeled_bs: 8  # 用于标注的批量大小
+    batch_size: 16  # 训练时的批量大小
+    batch_size_val: 16  # 验证时的批量大小
+    num_workers: 0  # 数据加载器的工作进程数量
+
+    # 训练时的数据变换操作列表
+    train_transforms:
+      - name: RandomGenerator  # 随机生成器，用于数据增强
+        kwargs: { output_size: [ 224, 224 ], p_flip: 0.5, p_rot: 0.5 }
+      - name: ToRGB  # 转换为RGB格式
+      - name: RandomCrop  # 随机裁剪
+        kwargs: { size: [ 224, 224 ] }
+      - name: RandomFlip  # 随机翻转
+        kwargs: { p: 0.5 }
+      - name: ColorJitter  # 色彩调整
+        kwargs: { brightness: 0.4, contrast: 0.4, saturation: 0.4, hue: 0.1, p: 0.8 }
+
+    # 验证时的数据变换操作列表
+    val_transforms:
+      - name: RandomGenerator  # 随机生成器，用于数据增强
+        kwargs: { output_size: [ 224, 224 ], p_flip: 0.5, p_rot: 0.5 }
+      - name: ToRGB  # 转换为RGB格式
